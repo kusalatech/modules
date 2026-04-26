@@ -1,0 +1,26 @@
+[project]
+name = "kusala-email-verification"
+version = "0.1.0"
+description = "Kusala Studio interoperable email verification (SendGrid adapter, Ed25519 JWS, one-time store)."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "AGPL-3.0-or-later" }
+dependencies = [
+  "joserfc>=1.3.0",
+  "cryptography>=44.0.0",
+  "requests>=2.32.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "ruff>=0.6.0",
+]
+
+[build-system]
+requires = ["setuptools>=70"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+

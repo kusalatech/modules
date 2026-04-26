@@ -1,0 +1,31 @@
+{
+  "name": "@kusala/email-verification",
+  "version": "0.1.0",
+  "description": "Kusala Studio interoperable email verification (SendGrid adapter, Ed25519 JWS, one-time store).",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test dist/test/*.test.js",
+    "dev": "tsc -w -p tsconfig.json"
+  },
+  "dependencies": {
+    "jose": "^6.1.0",
+    "nanoid": "^5.1.5",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/pg": "^8.15.2",
+    "typescript": "^5.8.3"
+  }
+}
+

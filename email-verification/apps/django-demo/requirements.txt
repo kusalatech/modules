@@ -1,0 +1,4 @@
+Django>=5.1,<6
+psycopg[binary]>=3.2
+kusala-email-verification @ file:///workspace/packages/python-email-verification
+

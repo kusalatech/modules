@@ -1,0 +1,18 @@
+FROM docker.io/python:3.12-slim
+
+WORKDIR /workspace
+
+COPY apps/django-demo/requirements.txt ./apps/django-demo/requirements.txt
+COPY packages/python-email-verification/pyproject.toml ./packages/python-email-verification/pyproject.toml
+COPY packages/python-email-verification/README.md ./packages/python-email-verification/README.md
+COPY packages/python-email-verification/src ./packages/python-email-verification/src
+
+RUN pip install -U pip && pip install -r apps/django-demo/requirements.txt
+
+COPY apps/django-demo ./apps/django-demo
+
+WORKDIR /workspace/apps/django-demo
+ENV PYTHONUNBUFFERED=1
+EXPOSE 8000
+CMD ["sh","-lc","python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000"]
+

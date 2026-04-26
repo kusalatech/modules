@@ -1,0 +1,15 @@
+{
+  "name": "kusala-node-demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node src/server.js"
+  },
+  "dependencies": {
+    "@kusala/email-verification": "file:../../packages/node-email-verification",
+    "express": "^5.1.0",
+    "jose": "^6.1.0",
+    "nodemailer": "^7.0.5"
+  }
+}
+

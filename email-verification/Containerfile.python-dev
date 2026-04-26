@@ -1,0 +1,17 @@
+FROM docker.io/python:3.12-slim
+
+WORKDIR /workspace
+
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+COPY packages/python-email-verification/pyproject.toml packages/python-email-verification/README.md ./packages/python-email-verification/
+WORKDIR /workspace/packages/python-email-verification
+RUN pip install -U pip && pip install -e .
+
+WORKDIR /workspace
+COPY . .
+
+WORKDIR /workspace/packages/python-email-verification
+CMD ["python","-c","import kusala_email_verification; print('kusala_email_verification ready')"]
+

@@ -1,0 +1,17 @@
+FROM docker.io/node:22-alpine
+
+WORKDIR /workspace
+
+RUN corepack enable
+
+COPY packages/node-email-verification/package.json packages/node-email-verification/package-lock.json* ./packages/node-email-verification/
+
+WORKDIR /workspace/packages/node-email-verification
+RUN npm install
+
+WORKDIR /workspace
+COPY . .
+
+WORKDIR /workspace/packages/node-email-verification
+CMD ["npm","run","dev"]
+
