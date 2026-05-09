@@ -1,20 +1,27 @@
 import pg from "pg";
 import type { VerificationRecord, VerificationStore } from "../types.js";
+import { ddl } from "../schema.js";
 
 const { Pool } = pg;
 
 export type PostgresStoreConfig = {
-  connectionString: string;
+  connectionString?: string;
+  pool?: pg.Pool;
   tableName?: string;
+  autoMigrate?: boolean;
 };
 
 export class PostgresVerificationStore implements VerificationStore {
   private pool: pg.Pool;
   private tableName: string;
+  private migration: Promise<void>;
 
   constructor(config: PostgresStoreConfig) {
-    this.pool = new Pool({ connectionString: config.connectionString });
+    this.pool = config.pool ?? new Pool({ connectionString: config.connectionString });
     this.tableName = config.tableName ?? "email_verification_tokens";
+    this.migration = config.autoMigrate !== false
+      ? this.pool.query(ddl(this.tableName)).then(() => {})
+      : Promise.resolve();
   }
 
   async close(): Promise<void> {
@@ -27,6 +34,7 @@ export class PostgresVerificationStore implements VerificationStore {
     email: string;
     expiresAt: Date;
   }): Promise<void> {
+    await this.migration;
     const { jti, userId, email, expiresAt } = params;
     const q = `
       insert into ${this.tableName} (jti, user_id, email, expires_at)
@@ -37,6 +45,7 @@ export class PostgresVerificationStore implements VerificationStore {
   }
 
   async consume(params: { jti: string; now?: Date }) {
+    await this.migration;
     const now = params.now ?? new Date();
 
     // First, fetch current state so we can return a stable reason.
